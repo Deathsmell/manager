@@ -1,0 +1,17 @@
+server:
+  port: 8010
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost/newteststeisclientdb
+    username: postgres
+    password: 7727ww7727
+
+  freemarker:
+    suffix: .ftlh
+  jpa:
+    generate-ddl: true
+    show-sql: false
+#    hibernate:
+#      ddl-auto: create
