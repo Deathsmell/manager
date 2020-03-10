@@ -1,4 +1,4 @@
-<#--<#include "security.ftlh">-->
+<#include "security.ftlh">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">Sweter</a>
@@ -15,18 +15,18 @@
             <li class="nav-item">
                 <a class="nav-link" href="/index">Clients</a>
             </li>
-<#--            <#if isAdmin>-->
-<#--                <li class="nav-item">-->
-<#--                    <a class="nav-link" href="/user">User List</a>-->
-<#--                </li>-->
-<#--            </#if>-->
+            <#if isAdmin>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">User List</a>
+                </li>
+            </#if>
         </ul>
     </div>
-<#--    <div class="navbar-text mr-3">${name}</div>-->
-<#--    <#if name != "unknown">-->
-<#--        <div>-->
-<#--            <#import 'login.ftlh' as l>-->
-<#--            <@l.logout/>-->
-<#--        </div>-->
-<#--    </#if>-->
+    <div class="navbar-text mr-3">${name}</div>
+    <#if name != "unknown">
+        <div>
+            <#import 'login.ftlh' as l>
+            <@l.logout/>
+        </div>
+    </#if>
 </nav>

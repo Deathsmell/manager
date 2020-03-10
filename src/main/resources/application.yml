@@ -12,6 +12,6 @@ spring:
     suffix: .ftlh
   jpa:
     generate-ddl: true
-    show-sql: false
+    show-sql: true
 #    hibernate:
 #      ddl-auto: create
