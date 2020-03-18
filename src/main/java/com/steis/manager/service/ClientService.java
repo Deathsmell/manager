@@ -2,18 +2,21 @@ package com.steis.manager.service;
 
 import com.steis.manager.domain.Client;
 import com.steis.manager.repository.ClientRepo;
+import com.steis.manager.service.inter.ClientServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 @Service
-public class ClientService {
+@Transactional
+public class ClientService implements ClientServiceInter {
 
     private final ClientRepo clientRepo;
 

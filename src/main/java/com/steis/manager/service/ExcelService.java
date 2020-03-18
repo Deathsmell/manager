@@ -6,35 +6,36 @@ import com.steis.manager.domain.Master;
 import com.steis.manager.repository.CashboxRepo;
 import com.steis.manager.repository.ClientRepo;
 import com.steis.manager.repository.MasterRepo;
+import com.steis.manager.service.inter.ExcelServiceInter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.transaction.Transactional;
+import java.io.*;
 import java.util.*;
 
 @Service
-public class ExcelService {
-    // подключение зависимостей
+@Transactional
+public class ExcelService implements ExcelServiceInter {
+
+
+    // insert dependency
     private final ClientRepo clientRepo;
     private final CashboxRepo cashboxRepo;
     private final MasterRepo masterRepo;
 
-    // филды
+    // fields
     @Value("${upload.clientList.path.xls}")
     private String path;
     private File file;
-    private int x = 0;
+    private int manyClients = 0;
     private Client client = new Client();
-    private Cashbox cashbox = new Cashbox();
-    private Master master = null;
-    private String newClientName = null;
     private String oldClientName = null;
 
 
@@ -45,6 +46,7 @@ public class ExcelService {
         this.masterRepo = masterRepo;
     }
 
+    // create table header name
     @PostConstruct
     private void postConstr (){
         int i = 0;
@@ -53,7 +55,7 @@ public class ExcelService {
         }
     }
 
-    // имена таблиц
+    // table names
     private String[] nameCell = {
                                 // 12 столбцов
             "#",                // int
@@ -71,24 +73,26 @@ public class ExcelService {
 
     };
 
+    // map for numeration tables
     private Map<String, Integer> tableName = new HashMap<>();
 
 
     public void readExcel() throws IOException {
+
+        boolean flag = false; // check is newClient
         file = new File(path);
+
+        // create structure xls file
         Workbook workbook = new HSSFWorkbook(new FileInputStream(file));
         Sheet sheet = workbook.getSheet("Список клиентов");
 
-        boolean flag = false;
-        client.setCashboxes(new ArrayList<>());
 
-        while (++x < sheet.getLastRowNum()) {
-            System.out.println(x);
-            cashbox = new Cashbox();
-            master = null;
+        while (++manyClients < sheet.getLastRowNum()) {
+            Cashbox cashbox = new Cashbox();
+            Master master = null;
 
 
-            Row row = sheet.getRow(x);
+            Row row = sheet.getRow(manyClients);
 
 
             if (row.getCell(tableName.get("Номер договора")) != null) {
@@ -101,7 +105,8 @@ public class ExcelService {
                 client.setVat((int) row.getCell(tableName.get("УНП")).getNumericCellValue());
             }
             if (row.getCell(tableName.get("Имя фирмы")) != null) {
-                newClientName = row.getCell(tableName.get("Имя фирмы")).getStringCellValue();
+                String newClientName = row.getCell(tableName.get("Имя фирмы")).getStringCellValue();
+                // check is new client
                 if (!newClientName.equals(oldClientName) || oldClientName.isEmpty()){
                     oldClientName = newClientName;
                     flag = true;
@@ -133,12 +138,10 @@ public class ExcelService {
 
             client.getCashboxes().add(cashbox);
             cashbox.setClient(client);
-            cashboxRepo.save(cashbox);
 
-            if (flag) {
+            if (flag) { // if is new clients
                 clientRepo.save(client);
                 client = new Client();
-                client.setCashboxes(new ArrayList<>());
                 flag = false;
             }
         }
@@ -149,26 +152,25 @@ public class ExcelService {
     public void createExcel() {
         file = new File(path);
 
-        // создание тома и листа для запослениния
+        // create new struct xls file
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("Список клиентов");
-        Row row = sheet.createRow(x);
+        Row row = sheet.createRow(manyClients);
 
-        // филды стилей
+        // field style and format
         DataFormat format = workbook.createDataFormat();
         CellStyle dataStyle = workbook.createCellStyle();
         Font font = workbook.createFont();
         CellStyle defaultStyle = workbook.createCellStyle();
-        // стили
+        // style
         dataStyle.setDataFormat(format.getFormat("dd.mm.yy"));
 
 
-        // создание таблицы и даем имя
+        // create a table and give name
         for (Map.Entry<String, Integer> item : tableName.entrySet()) {
             Cell newCell = row.createCell(item.getValue());
             newCell.setCellValue(item.getKey());
         }
-
 
         List<Client> clients = clientRepo.findAll();
 
@@ -182,10 +184,10 @@ public class ExcelService {
 
                 Cell dataCell = null;
 
-                row = sheet.createRow(++x);
+                row = sheet.createRow(++manyClients);
 
 
-                row.createCell(tableName.get("#")).setCellValue(x); // номер строки
+                row.createCell(tableName.get("#")).setCellValue(manyClients); // номер строки
 
                 row.createCell(tableName.get("Номер договора")).setCellValue(client.getContract()); // номер договора
 

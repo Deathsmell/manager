@@ -1,6 +1,5 @@
 package com.steis.manager;
 
-import com.steis.manager.controller.MainController;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,14 @@ class ManagerApplicationTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("List clients")));
+    }
+
+    @Test
+    void mainControllerTest2() throws Exception {
+        this.mockMvc.perform(get("/main"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        .andExpect(content().string(""));
     }
 
 }

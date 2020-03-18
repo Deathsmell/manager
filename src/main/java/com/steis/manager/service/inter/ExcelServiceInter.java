@@ -1,4 +1,10 @@
 package com.steis.manager.service.inter;
 
-public class ExelServiceInter {
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public interface ExcelServiceInter {
+
+    void readExcel() throws IOException;
+    void createExcel();
 }
