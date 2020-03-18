@@ -27,7 +27,7 @@
             <#list clients as client>
                 <tr>
                     <th scope="row">${client.id}</th>
-                    <td class="text-center">${client.name}</td>
+                    <td class="text-center">${client.name!''}</td>
                     <td class="text-center">${client.vat!''}</td>
                     <td class="text-center">${client.mail!''}</td>
                     <td class="text-right"><a href="/upload/${client.id}">upload</a></td>

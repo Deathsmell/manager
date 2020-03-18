@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost/newteststeisclientdb
+    url: jdbc:postgresql://localhost/teststeisclientdb
     username: postgres
     password: 7727ww7727
 
@@ -15,3 +15,4 @@ spring:
     show-sql: true
 #    hibernate:
 #      ddl-auto: create
+
