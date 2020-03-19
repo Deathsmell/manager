@@ -8,11 +8,11 @@ spring:
     username: postgres
     password: 7727ww7727
 
+
   freemarker:
     suffix: .ftlh
   jpa:
     generate-ddl: true
     show-sql: true
-#    hibernate:
+    hibernate:
 #      ddl-auto: create
-

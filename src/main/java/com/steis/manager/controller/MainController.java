@@ -1,10 +1,10 @@
 package com.steis.manager.controller;
 
+import com.steis.manager.service.CashboxService;
 import com.steis.manager.service.ClientService;
 import com.steis.manager.service.ExcelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +19,17 @@ public class MainController {
     private String path;
 
     private final ClientService clientService;
+    private final CashboxService cashboxService;
     private final ExcelService excelService;
 
     @Autowired
-    public MainController(ClientService clientService, ExcelService excelService) {
+    public MainController(ClientService clientService, CashboxService cashboxService, ExcelService excelService) {
         this.clientService = clientService;
+        this.cashboxService = cashboxService;
         this.excelService = excelService;
     }
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String main (Model model){
         File fileXls = new File(path);
         Boolean exist = fileXls.exists();
@@ -38,7 +40,7 @@ public class MainController {
     @GetMapping("/index")
     public String getClients (Model model){
         model.addAttribute("clients", clientService.getClients());
-        return "index";
+        return "clientList";
     }
 
     @GetMapping("/createExcel")

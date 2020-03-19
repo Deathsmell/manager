@@ -12,6 +12,7 @@ import java.util.Arrays;
 @Aspect
 public class LogAspect {
 
+    @Deprecated
     private final static Logger logger = Logger.getLogger(LogAspect.class);
 
     private Object logMethodInvocation (ProceedingJoinPoint joinPoint) throws Throwable {

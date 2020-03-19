@@ -15,6 +15,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/index">Clients</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/cashboxes">Cashboxes</a>
+            </li>
             <#if isAdmin>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User List</a>

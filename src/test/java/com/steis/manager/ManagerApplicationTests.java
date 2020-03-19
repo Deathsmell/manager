@@ -23,6 +23,13 @@ class ManagerApplicationTests {
     @Autowired
     private MockMvc mockMvc;
 
+
+    @Test
+    void lower (){
+        String upper = "FFF";
+        System.out.println(upper.toLowerCase());
+    }
+
     @Test
     void mainControllerTest() throws Exception {
         this.mockMvc.perform(get("/"))
