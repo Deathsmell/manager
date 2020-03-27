@@ -29,13 +29,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                     .authorizeRequests()
                     .antMatchers("/", "/login").permitAll()
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 .and()
                     .formLogin()
                     .loginPage("/login").permitAll()
                 .and()
                     .logout().permitAll();
+
+        // Temporarily
+        http.csrf().disable();
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
