@@ -1,28 +1,25 @@
 package com.steis.manager.domain;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@EqualsAndHashCode
+@Data
+@EqualsAndHashCode (of = {"id","name"})
+@ToString (of = {"id", "name"})
 public class Master {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     private String name;
 
-    @Getter
-    @Setter
     @ManyToMany(mappedBy = "masters", fetch = FetchType.LAZY)
     private List<Client> clients;
+
 }
 
