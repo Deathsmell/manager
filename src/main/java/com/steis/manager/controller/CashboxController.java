@@ -2,17 +2,16 @@ package com.steis.manager.controller;
 
 import com.steis.manager.domain.Cashbox;
 import com.steis.manager.domain.Master;
+import com.steis.manager.repository.CashboxRepo;
 import com.steis.manager.repository.MasterRepo;
 import com.steis.manager.service.CashboxService;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -20,19 +19,29 @@ import java.util.Map;
 public class CashboxController {
 
     private final CashboxService cashboxService;
+    private final CashboxRepo cashboxRepo;
 
     private final MasterRepo masterRepo;
 
     @Autowired
-    public CashboxController(CashboxService cashboxService, MasterRepo masterRepo) {
+    public CashboxController(CashboxService cashboxService, CashboxRepo cashboxRepo, MasterRepo masterRepo) {
         this.cashboxService = cashboxService;
+        this.cashboxRepo = cashboxRepo;
         this.masterRepo = masterRepo;
     }
 
+
     @GetMapping
-    public String getCashboxes(Model model) {
-        model.addAttribute("masters", masterRepo.findAllMaster());
-        model.addAttribute("cashboxes", cashboxService.findAll());
+    public void showCashboxes(Iterable<Master> masters, Iterable<Cashbox> cashboxes, Model model) {
+        Map<String, Iterable<?>> map = new HashMap<>();
+        map.put("masters", masters);
+        map.put("cashboxes", cashboxes);
+        model.addAllAttributes(map);
+    }
+
+    @GetMapping("/all")
+    public String showAll (Model model){
+        showCashboxes(masterRepo.findAllMaster(),cashboxService.findAll() , model);
         return "cashboxList";
     }
 
@@ -43,6 +52,7 @@ public class CashboxController {
             @RequestParam String address,
             @RequestParam(value = "isCase", required = false, defaultValue = "false") Boolean isCase,
             Model model) {
+
         model.addAttribute("masters", masterRepo.findAllMaster());
         if (!isCase) {
             name = name.toUpperCase();
@@ -58,12 +68,23 @@ public class CashboxController {
         return "cashboxList";
     }
 
-    @PostMapping("setMaster")
+    @GetMapping("setMaster")
     public String setMaster(
             @RequestParam("cashbox") Cashbox cashbox,
-            @RequestParam("master") Master master) {
-        cashboxService.setMaster(cashbox, master);
-        return "redirect:cashboxList";
+            @RequestParam("master") Master master,
+            HttpServletRequest request) {
+
+        cashboxService.setMaster(cashbox,master);
+
+        return "redirect:" + request.getHeader("referer");
+
+    }
+
+    @PostMapping("/list/master")
+    public String findByMaster (@RequestParam Master master, Model model){
+        model.addAttribute("master",masterRepo.findAllMaster());
+        model.addAttribute("cashboxes", cashboxService.findByMaster(master));
+        return "cashboxList";
     }
 
 }

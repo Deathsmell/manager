@@ -31,17 +31,20 @@
 
                 <div class="col-sm">
                     <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="list-home-list"
-                           data-toggle="list"
-                           href="#list-home" role="tab" aria-controls="home">Здесь</a>
-                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
-                           href="#list-profile" role="tab" aria-controls="profile">Будут</a>
-                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                           href="#list-messages" role="tab" aria-controls="messages">Названия</a>
-                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
-                           href="#list-settings" role="tab" aria-controls="settings">КСА</a>
+                        <#if masters??>
+                            <a class="list-group-item list-group-item-action active" id="list-home-list"
+                               data-toggle="list"
+                               href="/cashboxes" role="tab" aria-controls="home">Все</a>
+                            <#list masters as master>
+                                <form action="/cashboxes/list/master" method="post">
+                                    <button class="list-group-item list-group-item-action" name="master"
+                                            value="${master.id?c}" type="submit">${master.name}</button>
+                                </form>
+                            </#list>
+                        </#if>
                     </div>
                 </div>
+
 
             </div>
         </div>
@@ -78,9 +81,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <#if masters??>
                                     <#list masters as master>
-                                        <form action="/cashboxes/setMaster" method="post">
-                                            <input type="hidden" value="${master}" name="master">
-                                            <input type="hidden" value="${cashbox}" name="cashbox">
+                                        <form action="/cashboxes/setMaster" method="get">
+                                            <input type="hidden" value="${master.id?c}" name="master"/>
+                                            <input type="hidden" value="${cashbox.id?c}" name="cashbox"/>
                                             <button class="dropdown-item" type="submit">${master.name}</button>
                                         </form>
                                     </#list>

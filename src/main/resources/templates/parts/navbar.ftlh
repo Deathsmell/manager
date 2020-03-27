@@ -16,7 +16,7 @@
                 <a class="nav-link" href="/index">Clients</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/cashboxes">Cashboxes</a>
+                <a class="nav-link" href="/cashboxes/all">Cashboxes</a>
             </li>
             <#if isAdmin>
                 <li class="nav-item">

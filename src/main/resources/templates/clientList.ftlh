@@ -26,12 +26,12 @@
             <tbody>
             <#list clients as client>
                 <tr>
-                    <th scope="row">${client.id}</th>
+                    <th scope="row">${client.id?c}</th>
                     <td class="text-center">${client.name!''}</td>
-                    <td class="text-center">${client.vat!''}</td>
+                    <td class="text-center">${(client.vat?c)!''}</td>
                     <td class="text-center">${client.mail!''}</td>
-                    <td class="text-right"><a href="/upload/${client.id}">upload</a></td>
-                    <td class="text-right"><a href="/delete/${client.id}">delete</a></td>
+                    <td class="text-right"><a href="/upload/${client.id?c}">upload</a></td>
+                    <td class="text-right"><a href="/delete/${client.id?c}">delete</a></td>
                 </tr>
             </#list>
             </tbody>

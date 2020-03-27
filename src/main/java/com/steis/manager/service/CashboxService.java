@@ -7,6 +7,9 @@ import com.steis.manager.repository.MasterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CashboxService {
 
@@ -19,9 +22,9 @@ public class CashboxService {
         this.masterRepo = masterRepo;
     }
 
-    public Iterable<Cashbox> findAll(){
-        Iterable<Cashbox> cashboxes = cashboxRepo.findAll();
-        return cashboxes;
+    public ArrayList<Cashbox> findAll(){
+        List<Cashbox> cashboxes = cashboxRepo.findAllByOrderByAddress();
+        return new ArrayList<>(cashboxes);
     }
 
     public Iterable<Cashbox> getCashboxesByUsername(String name) {
@@ -33,11 +36,15 @@ public class CashboxService {
     }
 
     public Iterable<Cashbox> getCashboxesByUsernameAndAddress (String name, String address){
-        return cashboxRepo.findAllByClientNameAndAddress(name,address);
+        return cashboxRepo.findAllByClientNameAndAddress(name, address);
     }
 
     public void setMaster (Cashbox cashbox , Master master){
         cashbox.setMaster(master);
         cashboxRepo.save(cashbox);
+    }
+
+    public Iterable<Cashbox> findByMaster(Master master) {
+        return cashboxRepo.findByMaster(master);
     }
 }

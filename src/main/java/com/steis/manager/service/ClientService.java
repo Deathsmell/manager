@@ -26,7 +26,7 @@ public class ClientService implements ClientServiceInter {
     }
 
     public Iterable<Client> getClients (){
-        return clientRepo.findAll();
+        return clientRepo.findAllByOrderByName();
     }
 
     @Value("${upload.clientList.path}")
