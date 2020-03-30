@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Controller
-public class MainController {
+class MainController {
 
     @Value("${upload.clientList.path}")
     private String path;

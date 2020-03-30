@@ -39,25 +39,28 @@ public class CashboxController {
     }
 
 
+    // НЕ РАБОТАЕТ ПАГИНАЦИЯ ПРИ ВЫБОРКЕ ПО МАСТЕРАМ
     @GetMapping
     public String cashboxList(
-            @RequestParam(value = "name", defaultValue = "") String name,
-            @RequestParam(value = "address", defaultValue = "") String address,
-            @RequestParam(value = "master", required = false) Master master,
-            @RequestParam(value = "isCase", required = false, defaultValue = "false") Boolean isCase,
+            @RequestParam(value = "name", required = false, defaultValue = "") String name,
+            @RequestParam(value = "address", required = false, defaultValue = "") String address,
+            @RequestParam(value = "master", required = false, defaultValue = "") Master master,
             @PageableDefault(sort = {"nameModel"}, direction = Sort.Direction.ASC) Pageable pageable,
             Model model) {
         Page<Cashbox> cashboxes;
+
         if (!name.isEmpty() || !address.isEmpty()) {
-            cashboxes = cashboxService.getCashboxesByFilter(name, address, isCase, pageable);
+            cashboxes = cashboxService.getCashboxesByFilter(name, address, pageable);
             cashboxes = filterByMaster(master, cashboxes);
         } else {
             cashboxes = cashboxService.findAll(pageable);
             cashboxes = filterByMaster(master, cashboxes);
         }
 
+        String url = "/cashboxes" + "?name=" + name + "&address=" + address + "&master=" + master + "&";
+
         model.addAttribute("cashboxes",cashboxes);
-        model.addAttribute("url", "/cashboxes" + "?name=" + name + "&address=" + address + "&");
+        model.addAttribute("url", url);
         return "cashboxList";
     }
 
@@ -87,7 +90,8 @@ public class CashboxController {
 
 
     @ModelAttribute
-    public void masterAttribute(Model model) {
+    public void masterAttribute(Model model, HttpServletRequest request) {
         model.addAttribute("masters", masterRepo.findAllMaster());
+        model.addAttribute("whichMaster", request.getParameter("master"));
     }
 }

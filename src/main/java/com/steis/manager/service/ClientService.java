@@ -2,9 +2,9 @@ package com.steis.manager.service;
 
 import com.steis.manager.domain.Client;
 import com.steis.manager.repository.ClientRepo;
-import com.steis.manager.service.inter.ClientServiceInter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Service
 @Transactional
-public class ClientService implements ClientServiceInter {
+public class ClientService {
 
     private final ClientRepo clientRepo;
 
@@ -25,8 +25,8 @@ public class ClientService implements ClientServiceInter {
         this.clientRepo = clientRepo;
     }
 
-    public Iterable<Client> getClients (){
-        return clientRepo.findAllByOrderByName();
+    public Iterable<Client> getClients (Pageable pageable){
+        return clientRepo.findAllByOrderByName(pageable);
     }
 
     @Value("${upload.clientList.path}")

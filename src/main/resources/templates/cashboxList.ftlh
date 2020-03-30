@@ -1,7 +1,10 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/mastersTable.ftlh" as mt>
+<#import "parts/pager.ftlh" as p>
 <#--<#import "parts/login.ftlh" as l>-->
 <#--<#import "parts/clientform.ftlh" as f>-->
 <#--<#include "parts/security.ftlh">-->
+
 
 <@c.page>
     <div>
@@ -12,38 +15,36 @@
         <div class="container mt-4">
             <div class="row">
                 <div class="col-sm">
-                    <form class="ml-3" action="/cashboxes/filtr" method="get">
-                        <input type="text" class="form-control pr-3" name="name" placeholder="Введите имя организации">
+                    <form class="ml-3" action="/cashboxes" method="get">
+                        <input type="text" class="form-control pr-3"
+                               name="name" placeholder="Введите имя организации">
                         <input type="text" class="form-control pr-3" name="address" placeholder="Введите адрес кассы">
-                        <div class="row mt-3">
-                            <div class="col col-lg-3">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                            <div class="col">
-                                <input type="checkbox" class="form-check-input" name="isCase" id="check">
-                                <label class="form-check-label" for="check">
-                                    Регистр важен
-                                </label>
-                            </div>
-                        </div>
-                    </form>
+                        <#if masters??>
                 </div>
-
                 <div class="col-sm">
                     <div class="list-group" id="list-tab" role="tablist">
-                        <#if masters??>
-                            <a class="list-group-item list-group-item-action active" id="list-home-list"
-                               data-toggle="list"
-                               href="/cashboxes" role="tab" aria-controls="home">Все</a>
-                            <#list masters as master>
-                                <form action="/cashboxes/list/master" method="post">
-                                    <button class="list-group-item list-group-item-action" name="master"
-                                            value="${master.id?c}" type="submit">${master.name}</button>
-                                </form>
-                            </#list>
-                        </#if>
+                        <a class="list-group-item list-group-item-action  <#if !whichMaster?? || !whichMaster?contains("")>active</#if>"
+                                href="/cashboxes">Все</a>
+                        <#list masters as master>
+                            <button class="list-group-item list-group-item-action <#if whichMaster?? && whichMaster?contains("${master.id}")>active</#if>"
+                                    name="master"
+                                    value="${master.id?c}"
+                                    type="submit">${master.name}</button>
+                        </#list>
+
                     </div>
                 </div>
+                <#else>
+                    <div class="row mt-3">
+                        <div class="col col-lg-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </#if>
+                </form>
+
+
+                <#--                <@mt.masterTable masters url/>-->
 
 
             </div>
@@ -53,6 +54,7 @@
 
 
     <#if cashboxes??>
+        <@p.pager url cashboxes/>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -63,7 +65,7 @@
             </tr>
             </thead>
             <tbody>
-            <#list cashboxes as cashbox>
+            <#list cashboxes.content as cashbox>
                 <tr>
                     <th scope="row">${cashbox.client.name}</th>
                     <td class="text-center">${cashbox.nameModel!''}</td>
@@ -101,5 +103,6 @@
             <#else >no img
             </#if>-->
         </table>
+        <@p.pager url cashboxes/>
     </#if>
 </@c.page>
