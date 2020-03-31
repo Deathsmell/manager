@@ -4,6 +4,7 @@ import com.steis.manager.domain.Client;
 import com.steis.manager.repository.ClientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +26,7 @@ public class ClientService {
         this.clientRepo = clientRepo;
     }
 
-    public Iterable<Client> getClients (Pageable pageable){
+    public Page<Client> getClients (Pageable pageable){
         return clientRepo.findAllByOrderByName(pageable);
     }
 

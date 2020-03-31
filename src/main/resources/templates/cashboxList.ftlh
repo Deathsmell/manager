@@ -4,11 +4,14 @@
 <#--<#import "parts/login.ftlh" as l>-->
 <#--<#import "parts/clientform.ftlh" as f>-->
 <#--<#include "parts/security.ftlh">-->
-
+<#assign flag = whichMaster??>
 
 <@c.page>
     <div>
         <h1 class="text-center mt-3">Cashboxes list</h1>
+        <#if flag>
+            <h3 class="text-center mt-3">Пагинация работает не коректно. Выбирайте максимальное количество элементов!!</h3>
+        </#if>
     </div>
 
     <div class="form-group row ">
@@ -23,10 +26,10 @@
                 </div>
                 <div class="col-sm">
                     <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action  <#if !whichMaster?? || !whichMaster?contains("")>active</#if>"
+                        <a class="list-group-item list-group-item-action  <#if !flag>active</#if>"
                                 href="/cashboxes">Все</a>
                         <#list masters as master>
-                            <button class="list-group-item list-group-item-action <#if whichMaster?? && whichMaster?contains("${master.id}")>active</#if>"
+                            <button class="list-group-item list-group-item-action <#if flag && whichMaster?contains("${master.id}")>active</#if>"
                                     name="master"
                                     value="${master.id?c}"
                                     type="submit">${master.name}</button>
@@ -83,7 +86,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <#if masters??>
                                     <#list masters as master>
-                                        <form action="/cashboxes/setMaster" method="get">
+                                        <form action="/cashboxes/setMaster" method="post">
                                             <input type="hidden" value="${master.id?c}" name="master"/>
                                             <input type="hidden" value="${cashbox.id?c}" name="cashbox"/>
                                             <button class="dropdown-item" type="submit">${master.name}</button>

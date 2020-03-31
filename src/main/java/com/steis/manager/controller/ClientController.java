@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 @Controller
-class MainController {
+class ClientController {
 
     @Value("${upload.clientList.path}")
     private String path;
@@ -26,7 +26,7 @@ class MainController {
     private final ExcelService excelService;
 
     @Autowired
-    public MainController(ClientService clientService, CashboxService cashboxService, ExcelService excelService) {
+    public ClientController(ClientService clientService, CashboxService cashboxService, ExcelService excelService) {
         this.clientService = clientService;
         this.cashboxService = cashboxService;
         this.excelService = excelService;
@@ -40,7 +40,7 @@ class MainController {
         return "main";
     }
 
-    @GetMapping("/index")
+    @GetMapping("/clients")
     public String getClients (@PageableDefault (sort = {"name"}, direction = Sort.Direction.ASC) Pageable page,
                               Model model){
         model.addAttribute("clients", clientService.getClients(page));

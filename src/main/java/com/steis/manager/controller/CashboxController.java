@@ -6,17 +6,11 @@ import com.steis.manager.repository.CashboxRepo;
 import com.steis.manager.repository.MasterRepo;
 import com.steis.manager.service.CashboxService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -47,36 +41,39 @@ public class CashboxController {
             @RequestParam(value = "master", required = false, defaultValue = "") Master master,
             @PageableDefault(sort = {"nameModel"}, direction = Sort.Direction.ASC) Pageable pageable,
             Model model) {
-        Page<Cashbox> cashboxes;
 
+        Page<Cashbox> cashboxes;
         if (!name.isEmpty() || !address.isEmpty()) {
             cashboxes = cashboxService.getCashboxesByFilter(name, address, pageable);
-            cashboxes = filterByMaster(master, cashboxes);
         } else {
             cashboxes = cashboxService.findAll(pageable);
-            cashboxes = filterByMaster(master, cashboxes);
         }
+        cashboxes = filterByMaster(master, cashboxes, pageable);
 
-        String url = "/cashboxes" + "?name=" + name + "&address=" + address + "&master=" + master + "&";
+        String masterId = "";
+        if (master!=null){
+            masterId = master.getId().toString();
+        }
+        String url = "/cashboxes" + "?name=" + name + "&address=" + address + "&master=" + masterId + "&";
 
         model.addAttribute("cashboxes",cashboxes);
         model.addAttribute("url", url);
         return "cashboxList";
     }
 
-    private Page<Cashbox> filterByMaster(Master master, Page<Cashbox> cashboxes) {
+    private Page<Cashbox> filterByMaster(Master master, Page<Cashbox> cashboxes, Pageable pageable) {
         if (master != null) {
             List<Cashbox> result = cashboxes
                     .toList()
                     .stream()
                     .filter(cashbox -> cashbox.getMaster() == master)
                     .collect(Collectors.toList());
-            cashboxes = new PageImpl<>(result);
+            cashboxes = new PageImpl<>(result,pageable,result.size());
         }
         return cashboxes;
     }
 
-    @GetMapping("setMaster")
+    @PostMapping("setMaster")
     public String setMaster(
             @RequestParam("cashbox") Cashbox cashbox,
             @RequestParam("master") Master master,
@@ -85,7 +82,6 @@ public class CashboxController {
         cashboxService.setMaster(cashbox, master);
 
         return "redirect:" + request.getHeader("referer");
-
     }
 
 

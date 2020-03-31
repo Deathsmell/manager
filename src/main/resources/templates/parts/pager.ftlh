@@ -14,7 +14,6 @@
     <#else>
         <#assign body = 1..page.getTotalPages()>
     </#if>
-    <div class="row">url=${url}</div>
     <div class="row">
         <div class="col ml-5">
             <ul class="pagination">

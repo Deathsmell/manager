@@ -31,32 +31,28 @@ class ManagerApplicationTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private CashboxRepo cashboxRepo;
-
-
     @Test
-    void lower (){
-
-    }
-
-    @Test
-    void mainControllerTest() throws Exception {
+    void mainPageTest() throws Exception {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("List clients")));
+                .andExpect(content().string(containsString("Это начальная страница")));
     }
 
     @Test
-    void mainControllerTest2() throws Exception {
-        this.mockMvc.perform(get("/main"))
+    void clientPageTest() throws Exception {
+        this.mockMvc.perform(get("/clients"))
                 .andDo(print())
                 .andExpect(status().isOk())
-        .andExpect(content().string(""));
+        .andExpect(content().string("List clients"));
+    }
+
+    @Test
+    void cashboxPageTest() throws Exception {
+        this.mockMvc.perform(get("/cashboxes"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("Cashboxes list"));
     }
 
 }

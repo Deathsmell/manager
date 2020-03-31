@@ -1,4 +1,5 @@
 <#import "parts/common.ftlh" as c>
+<#import "parts/pager.ftlh" as p>
 <#--<#import "parts/login.ftlh" as l>-->
 <#--<#import "parts/clientform.ftlh" as f>-->
 <#--<#include "parts/security.ftlh">-->
@@ -13,6 +14,7 @@
 <#--    </#if>-->
 
     <#if clients??>
+        <@p.pager url clients/>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -24,14 +26,16 @@
             </tr>
             </thead>
             <tbody>
-            <#list clients as client>
+            <#list clients.content as client>
                 <tr>
                     <th scope="row">${client.id?c}</th>
                     <td class="text-center">${client.name!''}</td>
                     <td class="text-center">${(client.vat?c)!''}</td>
                     <td class="text-center">${client.mail!''}</td>
-                    <td class="text-right"><a href="/upload/${client.id?c}">upload</a></td>
-                    <td class="text-right"><a href="/delete/${client.id?c}">delete</a></td>
+                    <td class="text-right">
+                        <a class="btn btn-warning" href="/upload/${client.id?c}">upload</a>
+                        <a class="btn btn-danger" href="/delete/${client.id?c}">delete</a>
+                    </td>
                 </tr>
             </#list>
             </tbody>
@@ -40,5 +44,6 @@
             <#else >no img
             </#if>-->
         </table>
+        <@p.pager url clients/>
     </#if>
 </@c.page>
