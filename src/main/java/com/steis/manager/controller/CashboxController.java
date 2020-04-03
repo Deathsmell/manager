@@ -2,38 +2,34 @@ package com.steis.manager.controller;
 
 import com.steis.manager.domain.Cashbox;
 import com.steis.manager.domain.Master;
-import com.steis.manager.repository.CashboxRepo;
 import com.steis.manager.repository.MasterRepo;
 import com.steis.manager.service.CashboxService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cashboxes")
 public class CashboxController {
 
     private final CashboxService cashboxService;
-    private final CashboxRepo cashboxRepo;
 
     private final MasterRepo masterRepo;
 
+
     @Autowired
-    public CashboxController(CashboxService cashboxService, CashboxRepo cashboxRepo, MasterRepo masterRepo) {
+    public CashboxController(CashboxService cashboxService, MasterRepo masterRepo) {
         this.cashboxService = cashboxService;
-        this.cashboxRepo = cashboxRepo;
         this.masterRepo = masterRepo;
     }
 
-
-    // НЕ РАБОТАЕТ ПАГИНАЦИЯ ПРИ ВЫБОРКЕ ПО МАСТЕРАМ
     @GetMapping
     public String cashboxList(
             @RequestParam(value = "name", required = false, defaultValue = "") String name,
@@ -43,34 +39,22 @@ public class CashboxController {
             Model model) {
 
         Page<Cashbox> cashboxes;
-        if (!name.isEmpty() || !address.isEmpty()) {
+        String masterId = "";
+
+        if (master != null) {
+            masterId = master.getId().toString();
+            cashboxes = cashboxService.findByMaster(master, name, address , pageable);
+        } else if (!name.isEmpty() || !address.isEmpty()) {
             cashboxes = cashboxService.getCashboxesByFilter(name, address, pageable);
         } else {
             cashboxes = cashboxService.findAll(pageable);
         }
-        cashboxes = filterByMaster(master, cashboxes, pageable);
 
-        String masterId = "";
-        if (master!=null){
-            masterId = master.getId().toString();
-        }
         String url = "/cashboxes" + "?name=" + name + "&address=" + address + "&master=" + masterId + "&";
 
-        model.addAttribute("cashboxes",cashboxes);
+        model.addAttribute("cashboxes", cashboxes);
         model.addAttribute("url", url);
         return "cashboxList";
-    }
-
-    private Page<Cashbox> filterByMaster(Master master, Page<Cashbox> cashboxes, Pageable pageable) {
-        if (master != null) {
-            List<Cashbox> result = cashboxes
-                    .toList()
-                    .stream()
-                    .filter(cashbox -> cashbox.getMaster() == master)
-                    .collect(Collectors.toList());
-            cashboxes = new PageImpl<>(result,pageable,result.size());
-        }
-        return cashboxes;
     }
 
     @PostMapping("setMaster")

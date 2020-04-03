@@ -16,23 +16,19 @@ import java.util.List;
 @Repository
 public interface CashboxRepo extends JpaRepository<Cashbox, Long> {
 
-    @EntityGraph(attributePaths = { "client" })
+    @EntityGraph(attributePaths = {"client"})
     Page<Cashbox> findAllByOrderByAddress(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"client"})
+    @Query("select cb from Cashbox cb where cb.master = :master and lower( cb.client.name) like %:name% and lower(cb.address) like %:address%")
+    Page<Cashbox> findAllByMaster(@Param("master")Master master, @Param("name") String name, @Param("address") String address, Pageable pageable);
 
     List<Cashbox> findByClient(Client client);
 
-    @EntityGraph(attributePaths = { "client" })
-    @Query(value = "select cb from Cashbox cb where lower(cb.address) like %:address%")
-    Page<Cashbox> findAllByAddressContaining(@Param("address") String address, Pageable pageable);
-
-    @EntityGraph(attributePaths = { "client" })
-    @Query(value = "select cb from Cashbox cb where lower(cb.client.name) like %:name%")
-    Page<Cashbox> findAllByClientName(@Param("name") String name, Pageable pageable);
-
-    @EntityGraph(attributePaths = { "client" })
+    @EntityGraph(attributePaths = {"client"})
     @Query(value = "select cb from Cashbox cb where lower(cb.client.name) like %:name% and lower(cb.address) like %:address%")
     Page<Cashbox> findAllByClientNameAndAddress(@Param("name") String name, @Param("address") String address, Pageable pageable);
 
-    @EntityGraph(attributePaths = { "client" })
+    @EntityGraph(attributePaths = {"client"})
     Page<Cashbox> findByMaster(Master master, Pageable pageable);
 }

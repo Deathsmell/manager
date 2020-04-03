@@ -4,33 +4,43 @@
 <#--<#import "parts/login.ftlh" as l>-->
 <#--<#import "parts/clientform.ftlh" as f>-->
 <#--<#include "parts/security.ftlh">-->
-<#assign flag = whichMaster??>
 
 <@c.page>
     <div>
         <h1 class="text-center mt-3">Cashboxes list</h1>
-        <#if flag>
-            <h3 class="text-center mt-3">Пагинация работает не коректно. Выбирайте максимальное количество элементов!!</h3>
-        </#if>
     </div>
 
     <div class="form-group row ">
         <div class="container mt-4">
             <div class="row">
                 <div class="col-sm">
-                    <form class="ml-3" action="/cashboxes" method="get">
-                        <input type="text" class="form-control pr-3"
-                               name="name" placeholder="Введите имя организации">
-                        <input type="text" class="form-control pr-3" name="address" placeholder="Введите адрес кассы">
-                        <#if masters??>
+                    <form class="ml-3" action="/cashboxes" method="get" id="searchCashboxes">
+                        <input type="text" class="form-control pr-3 mt-5"
+                               name="name" placeholder="Введите имя организации"
+                                <#if RequestParameters.name??>
+                                    value="${RequestParameters.name}"
+                                </#if>
+                        >
+                        <input type="text" class="form-control pr-3 mt-5"
+                               name="address" placeholder="Введите адрес кассы"
+                                <#if RequestParameters.address??>
+                                    value="${RequestParameters.address}"
+                                </#if>
+                        >
+                    </form>
+                    <#if masters??>
                 </div>
                 <div class="col-sm">
                     <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action  <#if !flag>active</#if>"
-                                href="/cashboxes">Все</a>
+                        <button class="list-group-item list-group-item-action  <#if !RequestParameters.master??>active</#if>"
+                                form="searchCashboxes">Все
+                        </button>
                         <#list masters as master>
-                            <button class="list-group-item list-group-item-action <#if flag && whichMaster?contains("${master.id}")>active</#if>"
+                            <button class="list-group-item
+                                           list-group-item-action
+                                           <#if RequestParameters.master?? && RequestParameters.master == master.id?c>active</#if>"
                                     name="master"
+                                    form="searchCashboxes"
                                     value="${master.id?c}"
                                     type="submit">${master.name}</button>
                         </#list>
@@ -44,11 +54,6 @@
                         </div>
                     </div>
                 </#if>
-                </form>
-
-
-                <#--                <@mt.masterTable masters url/>-->
-
 
             </div>
         </div>

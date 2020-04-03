@@ -31,23 +31,22 @@ public class CashboxService {
         cashboxRepo.save(cashbox);
     }
 
-    public Iterable<Cashbox> findByMaster(Master master, Pageable pageble) {
+    public Page<Cashbox> findByMaster(Master master, Pageable pageble) {
         return cashboxRepo.findByMaster(master, pageble);
+    }
+
+    public Page<Cashbox> findByMaster(Master master, String name, String address, Pageable pageable){
+        name = name.toLowerCase();
+        address = address.toLowerCase();
+        return cashboxRepo.findAllByMaster(master, name, address, pageable);
     }
 
     public Page<Cashbox> getCashboxesByFilter(String name, String address, Pageable pageable) {
             name = name.toLowerCase();
             address = address.toLowerCase();
 
-        if (address.isEmpty() && !name.isEmpty()) {
-            System.out.println("По имени");
-            return cashboxRepo.findAllByClientName(name, pageable);
-        } else if (name.isEmpty() && !address.isEmpty()){
-            System.out.println("По адресу");
-            return cashboxRepo.findAllByAddressContaining(address, pageable);
-        } else {
-            System.out.println("По имени и адресу");
+        if (address.isEmpty() || !name.isEmpty()) {
             return cashboxRepo.findAllByClientNameAndAddress(name, address, pageable);
-        }
+        } else return null;
     }
 }
