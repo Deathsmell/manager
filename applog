@@ -1,0 +1,20 @@
+2020-04-03 17:48:54 INFO  LogAspect:27 - CashboxService.([Page request [number: 0, size 10, sort: nameModel: ASC]]) : Page 1 of 144 containing com.steis.manager.domain.Cashbox instances in 42 msec.
+2020-04-03 17:51:49 INFO  LogAspect:27 - ClientService.([Page request [number: 0, size 10, sort: name: ASC]]) : Page 1 of 97 containing com.steis.manager.domain.Client instances in 60 msec.
+2020-04-03 17:51:49 INFO  LogAspect:27 - CashboxService.([Page request [number: 0, size 10, sort: nameModel: ASC]]) : Page 1 of 144 containing com.steis.manager.domain.Cashbox instances in 46 msec.
+2020-04-03 17:51:51 INFO  LogAspect:27 - UserService.([User(id=null, username=null, password=null, roles=[USER])]) : true in 16 msec.
+2020-04-03 17:51:51 INFO  LogAspect:27 - UserService.([User(id=null, username=John, password=null, roles=null)]) : false in 7 msec.
+2020-04-03 17:51:51 INFO  LogAspect:27 - UserService.([John, User(id=null, username=John, password=null, roles=[USER]), {some=some, USER=}]) : null in 1 msec.
+2020-04-03 17:51:53 INFO  LogAspect:27 - ExcelService.([]) : null in 312 msec.
+2020-04-03 17:52:42 INFO  LogAspect:27 - ClientService.([Page request [number: 0, size 10, sort: name: ASC]]) : Page 1 of 97 containing com.steis.manager.domain.Client instances in 58 msec.
+2020-04-03 17:52:42 INFO  LogAspect:27 - CashboxService.([Page request [number: 0, size 10, sort: nameModel: ASC]]) : Page 1 of 144 containing com.steis.manager.domain.Cashbox instances in 44 msec.
+2020-04-03 17:52:44 INFO  LogAspect:27 - UserService.([User(id=null, username=null, password=null, roles=[USER])]) : true in 17 msec.
+2020-04-03 17:52:44 INFO  LogAspect:27 - UserService.([User(id=null, username=John, password=null, roles=null)]) : false in 1 msec.
+2020-04-03 17:52:44 INFO  LogAspect:27 - UserService.([John, User(id=null, username=John, password=null, roles=[USER]), {some=some, USER=}]) : null in 1 msec.
+2020-04-03 17:52:46 INFO  LogAspect:27 - ExcelService.([]) : null in 375 msec.
+2020-04-03 18:04:37 INFO  LogAspect:27 - ClientService.([Page request [number: 0, size 10, sort: name: ASC]]) : Page 1 of 97 containing com.steis.manager.domain.Client instances in 76 msec.
+2020-04-03 18:04:37 INFO  LogAspect:27 - CashboxService.([Page request [number: 0, size 10, sort: nameModel: ASC]]) : Page 1 of 144 containing com.steis.manager.domain.Cashbox instances in 43 msec.
+2020-04-03 18:04:39 INFO  LogAspect:27 - UserService.([User(id=null, username=null, password=null, roles=[USER])]) : true in 14 msec.
+2020-04-03 18:04:39 INFO  LogAspect:27 - UserService.([User(id=null, username=John, password=null, roles=null)]) : false in 1 msec.
+2020-04-03 18:04:39 INFO  LogAspect:27 - UserService.([John, User(id=null, username=John, password=null, roles=[USER]), {some=some, USER=}]) : null in 1 msec.
+2020-04-03 18:04:41 INFO  LogAspect:27 - ExcelService.([]) : null in 318 msec.
+2020-04-03 18:18:54 INFO  LogAspect:27 - CashboxService.([Page request [number: 0, size 10, sort: nameModel: ASC]]) : Page 1 of 144 containing com.steis.manager.domain.Cashbox instances in 60 msec.
