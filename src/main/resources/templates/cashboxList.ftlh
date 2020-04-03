@@ -36,7 +36,8 @@
                                 form="searchCashboxes">Все
                         </button>
                         <#list masters as master>
-                            <button class="list-group-item
+                            <button
+                                    class="list-group-item
                                            list-group-item-action
                                            <#if RequestParameters.master?? && RequestParameters.master == master.id?c>active</#if>"
                                     name="master"
