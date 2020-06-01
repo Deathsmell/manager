@@ -1,18 +1,10 @@
 package com.steis.manager;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.steis.manager.domain.Cashbox;
-import com.steis.manager.domain.Client;
-import com.steis.manager.domain.User;
-import com.steis.manager.repository.CashboxRepo;
-import com.steis.manager.repository.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.util.Streamable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 

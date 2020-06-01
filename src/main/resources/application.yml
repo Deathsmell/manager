@@ -1,12 +1,12 @@
 server:
-  port: 8010
+  port: 8080
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/teststeisclientdb
-    username: ${db_username}
-    password: ${db_password}
+    username: ${db_username:deathsmell}
+    password: ${db_password:pAsSw0rt}
 
 
   freemarker:
