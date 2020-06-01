@@ -5,15 +5,15 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost/teststeisclientdb
-    username: postgres
-    password: 7727ww7727
+    username: ${db_username}
+    password: ${db_password}
 
 
   freemarker:
     suffix: .ftlh
   jpa:
-    generate-ddl: true
     show-sql: true
+    generate-ddl: true
     hibernate:
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-#      ddl-auto: create
+#      ddl-auto: none
+

@@ -9,13 +9,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/cashboxes")
 public class CashboxController {
 
@@ -30,42 +32,23 @@ public class CashboxController {
         this.masterRepo = masterRepo;
     }
 
-    @GetMapping
-    public String cashboxList(
-            @RequestParam(value = "name", required = false, defaultValue = "") String name,
-            @RequestParam(value = "address", required = false, defaultValue = "") String address,
-            @RequestParam(value = "master", required = false, defaultValue = "") Master master,
-            @PageableDefault(sort = {"nameModel"}, direction = Sort.Direction.ASC) Pageable pageable,
-            Model model) {
-
-        Page<Cashbox> cashboxes;
-        String masterId = "";
-
-        if (master != null) {
-            masterId = master.getId().toString();
-            cashboxes = cashboxService.findByMaster(master, name, address , pageable);
-        } else if (!name.isEmpty() || !address.isEmpty()) {
-            cashboxes = cashboxService.getCashboxesByFilter(name, address, pageable);
-        } else {
-            cashboxes = cashboxService.findAll(pageable);
-        }
-
-        String url = "/cashboxes" + "?name=" + name + "&address=" + address + "&master=" + masterId + "&";
-
-        model.addAttribute("cashboxes", cashboxes);
-        model.addAttribute("url", url);
-        return "cashboxList";
+    @GetMapping("/getAll")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public List<Cashbox> getAll() {
+        return cashboxService.findAll();
     }
 
-    @PostMapping("setMaster")
-    public String setMaster(
-            @RequestParam("cashbox") Cashbox cashbox,
-            @RequestParam("master") Master master,
-            HttpServletRequest request) {
 
-        cashboxService.setMaster(cashbox, master);
+    @Deprecated
+    @PostMapping(value = "setMaster/{id}")
+    @CrossOrigin(origins = "http://localhost:8080")
+    public Cashbox setMaster(
+            @PathVariable("id") Cashbox cashbox,
+            @RequestBody Master master
+    ) {
 
-        return "redirect:" + request.getHeader("referer");
+        return cashboxService.setMaster(cashbox, master);
+
     }
 
 

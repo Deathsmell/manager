@@ -16,12 +16,13 @@ import java.util.List;
 @Repository
 public interface CashboxRepo extends JpaRepository<Cashbox, Long> {
 
-    @EntityGraph(attributePaths = {"client"})
-    Page<Cashbox> findAllByOrderByAddress(Pageable pageable);
+    @EntityGraph(attributePaths = {"client", "master"},type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select cb from Cashbox cb")
+    List<Cashbox> findAll();
 
     @EntityGraph(attributePaths = {"client"})
     @Query("select cb from Cashbox cb where cb.master = :master and lower( cb.client.name) like %:name% and lower(cb.address) like %:address%")
-    Page<Cashbox> findAllByMaster(@Param("master")Master master, @Param("name") String name, @Param("address") String address, Pageable pageable);
+    Page<Cashbox> findAllByMaster(@Param("master") Master master, @Param("name") String name, @Param("address") String address, Pageable pageable);
 
     List<Cashbox> findByClient(Client client);
 

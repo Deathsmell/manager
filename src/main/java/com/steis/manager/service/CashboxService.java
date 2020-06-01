@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CashboxService {
 
@@ -21,32 +23,16 @@ public class CashboxService {
         this.masterRepo = masterRepo;
     }
 
-    public Page<Cashbox> findAll(Pageable pageable) {
-        return cashboxRepo.findAllByOrderByAddress(pageable);
-
+    public List<Cashbox> findAll() {
+        return cashboxRepo.findAll();
     }
 
-    public void setMaster(Cashbox cashbox, Master master) {
-        cashbox.setMaster(master);
-        cashboxRepo.save(cashbox);
-    }
+    @Deprecated
+    public Cashbox setMaster(Cashbox cashbox, Master master) {
 
-    public Page<Cashbox> findByMaster(Master master, Pageable pageble) {
-        return cashboxRepo.findByMaster(master, pageble);
-    }
-
-    public Page<Cashbox> findByMaster(Master master, String name, String address, Pageable pageable){
-        name = name.toLowerCase();
-        address = address.toLowerCase();
-        return cashboxRepo.findAllByMaster(master, name, address, pageable);
-    }
-
-    public Page<Cashbox> getCashboxesByFilter(String name, String address, Pageable pageable) {
-            name = name.toLowerCase();
-            address = address.toLowerCase();
-
-        if (address.isEmpty() || !name.isEmpty()) {
-            return cashboxRepo.findAllByClientNameAndAddress(name, address, pageable);
-        } else return null;
+        Long id = master.getId();
+        // Костыль
+        cashbox.setMaster(masterRepo.getOne(id));
+        return cashboxRepo.save(cashbox);
     }
 }

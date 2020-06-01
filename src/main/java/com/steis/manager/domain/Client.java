@@ -1,5 +1,6 @@
 package com.steis.manager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -33,9 +34,11 @@ public class Client {
     @JoinTable (name = "client_masters",
                 joinColumns = @JoinColumn(name = "client_id"),
                 inverseJoinColumns = @JoinColumn(name = "master_id"))
+    @JsonIgnoreProperties("client")
     private Collection<Master> masters = new HashSet<>();
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("client")
     private Collection<Cashbox> cashboxes = new ArrayList<>();
 
 }

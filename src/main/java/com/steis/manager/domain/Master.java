@@ -18,7 +18,9 @@ public class Master {
 
     private String name;
 
-    @ManyToMany(mappedBy = "masters", fetch = FetchType.LAZY)
+    private String avatar;
+
+    @ManyToMany(mappedBy = "masters", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Client> clients;
 
 }

@@ -138,6 +138,7 @@ public class ExcelService implements ExcelServiceInter {
 
             client.getCashboxes().add(cashbox);
             cashbox.setClient(client);
+            cashboxRepo.save(cashbox);
 
             if (flag) { // if is new clients
                 clientRepo.save(client);
