@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/public/
+/src/main/resources/public/static/
+/src/main/resources/public/favicon.ico
+/src/main/resources/public/index.html
+/src/main/resources/templates/

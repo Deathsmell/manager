@@ -33,7 +33,7 @@ public class CashboxController {
     }
 
     @GetMapping("/getAll")
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "${cros.access.path}")
     public List<Cashbox> getAll() {
         return cashboxService.findAll();
     }
@@ -41,7 +41,7 @@ public class CashboxController {
 
     @Deprecated
     @PostMapping(value = "setMaster/{id}")
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "${cros.access.path}")
     public Cashbox setMaster(
             @PathVariable("id") Cashbox cashbox,
             @RequestBody Master master

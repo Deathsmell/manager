@@ -1,5 +1,6 @@
 package com.steis.manager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -20,8 +21,6 @@ public class Master {
 
     private String avatar;
 
-    @ManyToMany(mappedBy = "masters", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Client> clients;
 
 }
 

@@ -30,13 +30,6 @@ public class Client {
 
     private String mail;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable (name = "client_masters",
-                joinColumns = @JoinColumn(name = "client_id"),
-                inverseJoinColumns = @JoinColumn(name = "master_id"))
-    @JsonIgnoreProperties("client")
-    private Collection<Master> masters = new HashSet<>();
-
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("client")
     private Collection<Cashbox> cashboxes = new ArrayList<>();

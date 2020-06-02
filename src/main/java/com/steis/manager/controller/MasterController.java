@@ -22,7 +22,7 @@ public class MasterController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "${cros.access.path}")
     public List<Master> getAll (){
         return masterRepo.findAll();
     }
