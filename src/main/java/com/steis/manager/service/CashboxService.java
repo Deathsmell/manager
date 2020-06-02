@@ -5,8 +5,6 @@ import com.steis.manager.domain.Master;
 import com.steis.manager.repository.CashboxRepo;
 import com.steis.manager.repository.MasterRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

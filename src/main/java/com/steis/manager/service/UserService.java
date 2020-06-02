@@ -4,7 +4,6 @@ import com.steis.manager.domain.Role;
 import com.steis.manager.domain.User;
 import com.steis.manager.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

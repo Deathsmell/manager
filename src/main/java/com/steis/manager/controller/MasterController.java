@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/masters")
 public class MasterController {
 
-    private MasterRepo masterRepo;
+    private final MasterRepo masterRepo;
 
     @Autowired
     public MasterController(MasterRepo masterRepo) {
